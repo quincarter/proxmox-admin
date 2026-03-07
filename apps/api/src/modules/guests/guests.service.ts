@@ -1,0 +1,83 @@
+import { Injectable } from "@nestjs/common";
+import { ProxmoxHttpService } from "../proxmox/proxmox-http.service";
+import { ProxmoxService } from "../proxmox/proxmox.service";
+import type {
+  AnyGuest,
+  LxcGuest,
+  QemuGuest,
+  LxcConfig,
+  GuestAction,
+} from "@proxmox-admin/types";
+
+type ServerRef = Parameters<ProxmoxService["buildAuthenticatedClient"]>[0];
+type SessionCreds = Parameters<ProxmoxService["buildAuthenticatedClient"]>[1];
+
+@Injectable()
+export class GuestsService {
+  constructor(
+    private readonly http: ProxmoxHttpService,
+    private readonly proxmox: ProxmoxService,
+  ) {}
+
+  async listGuests(
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<AnyGuest[]> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    // Cluster resources gives us a unified list of all VMs and containers
+    const resources = await this.http.get<AnyGuest[]>(
+      client,
+      "/cluster/resources?type=vm",
+    );
+    return resources;
+  }
+
+  async listLxc(
+    node: string,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<LxcGuest[]> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    return this.http.get<LxcGuest[]>(client, `/nodes/${node}/lxc`);
+  }
+
+  async getLxcConfig(
+    node: string,
+    vmid: number,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<LxcConfig> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    const config = await this.http.get<Omit<LxcConfig, "vmid" | "node">>(
+      client,
+      `/nodes/${node}/lxc/${vmid}/config`,
+    );
+    return { ...config, vmid, node };
+  }
+
+  async listQemu(
+    node: string,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<QemuGuest[]> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    return this.http.get<QemuGuest[]>(client, `/nodes/${node}/qemu`);
+  }
+
+  async performGuestAction(
+    node: string,
+    vmid: number,
+    guestType: "lxc" | "qemu",
+    action: GuestAction,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<string> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    const typeSegment = guestType === "lxc" ? "lxc" : "qemu";
+    // Returns UPID task string
+    return this.http.post<string>(
+      client,
+      `/nodes/${node}/${typeSegment}/${vmid}/status/${action}`,
+    );
+  }
+}

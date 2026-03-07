@@ -1,0 +1,41 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "nest start --watch",
+      "options": { "cwd": "{projectRoot}" },
+      "continuous": true
+    },
+    "build": {
+      "command": "nest build",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "start": {
+      "command": "node dist/main",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "test": {
+      "command": "jest",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "lint": {
+      "command": "tsc --noEmit",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "db:migrate": {
+      "command": "npx prisma migrate dev",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "db:generate": {
+      "command": "npx prisma generate",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "db:studio": {
+      "command": "npx prisma studio",
+      "options": { "cwd": "{projectRoot}" }
+    }
+  }
+}

@@ -1,0 +1,112 @@
+// This is the Proxmox Admin BFF Prisma schema
+// Stores server-side application metadata — never raw credentials
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Known Servers ──────────────────────────────────────────────────────────
+
+/// A Proxmox server that the hosted app knows about.
+/// Credentials are NEVER stored here — only connection metadata.
+model KnownServer {
+  id              String   @id @default(cuid())
+  label           String
+  host            String
+  port            Int      @default(8006)
+  tlsMode         String   @default("system") // system | self-signed | insecure
+  trusted         Boolean  @default(false)
+  lastConnectedAt DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  connectionAudit ConnectionAudit[]
+  preferences     ServerPreference[]
+
+  @@unique([host, port])
+  @@index([host])
+}
+
+// ─── Discovery ──────────────────────────────────────────────────────────────
+
+/// Result of a LAN discovery scan for Proxmox hosts
+model DiscoveryResult {
+  id          String   @id @default(cuid())
+  host        String
+  port        Int
+  respondedAt DateTime
+  tlsDetected Boolean  @default(false)
+  trusted     Boolean  @default(false)
+  dismissed   Boolean  @default(false)
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([host, port])
+}
+
+// ─── Connection Audit ───────────────────────────────────────────────────────
+
+/// Audit log for connection events (login, logout, failure)
+model ConnectionAudit {
+  id         String   @id @default(cuid())
+  serverId   String
+  server     KnownServer @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  event      String   // login | logout | auth_failure | session_expired
+  username   String?
+  realm      String?
+  ip         String?
+  success    Boolean
+  detail     String?
+  occurredAt DateTime @default(now())
+
+  @@index([serverId])
+  @@index([occurredAt])
+}
+
+// ─── App Preferences ────────────────────────────────────────────────────────
+
+/// Key-value preferences scoped to the hosted app deployment.
+/// Avoid storing secrets here — use environment variables for those.
+model AppPreference {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+/// Per-server preferences such as default username hint or selected realm
+model ServerPreference {
+  id        String      @id @default(cuid())
+  serverId  String
+  server    KnownServer @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  key       String
+  value     String
+  updatedAt DateTime    @updatedAt
+
+  @@unique([serverId, key])
+}
+
+// ─── Task Snapshots ─────────────────────────────────────────────────────────
+
+/// Selected task history snapshots for cross-session continuity
+model TaskSnapshot {
+  upid       String   @id
+  serverId   String
+  node       String
+  type       String
+  guestId    String?
+  status     String
+  startedAt  DateTime
+  finishedAt DateTime?
+  exitStatus String?
+  user       String
+  createdAt  DateTime @default(now())
+
+  @@index([serverId])
+  @@index([startedAt])
+}

@@ -1,0 +1,26 @@
+{
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "command": "vite",
+      "options": { "cwd": "{projectRoot}" },
+      "continuous": true
+    },
+    "build": {
+      "command": "tsc -p tsconfig.build.json && vite build",
+      "options": { "cwd": "{projectRoot}" },
+      "dependsOn": ["^build"]
+    },
+    "preview": {
+      "command": "vite preview",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "lint": {
+      "command": "tsc --noEmit",
+      "options": { "cwd": "{projectRoot}" }
+    }
+  }
+}

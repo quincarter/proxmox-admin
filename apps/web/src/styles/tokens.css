@@ -1,0 +1,91 @@
+/**
+ * Proxmox Admin — design tokens
+ * Dark-mode first, Discord-inspired density and hierarchy.
+ */
+:root {
+  /* ── Colors ── */
+  --color-bg-base: #0f1012;
+  --color-bg-elevated: #1a1c1f;
+  --color-bg-surface: #222428;
+  --color-bg-overlay: #2a2d32;
+  --color-bg-hover: #303438;
+
+  --color-text-primary: #f2f3f5;
+  --color-text-secondary: #b5bac1;
+  --color-text-muted: #72767d;
+  --color-text-link: #00b0f4;
+
+  --color-brand: #5865f2;
+  --color-brand-hover: #4752c4;
+
+  --color-success: #23a55a;
+  --color-success-bg: #1a3a2a;
+  --color-warning: #f0b232;
+  --color-warning-bg: #3a2e14;
+  --color-danger: #f23f42;
+  --color-danger-bg: #3a1a1a;
+  --color-info: #00b0f4;
+  --color-info-bg: #0a2736;
+  --color-unknown: #72767d;
+
+  /* ── Proxmox status colors ── */
+  --status-running: #23a55a;
+  --status-stopped: #f23f42;
+  --status-paused: #f0b232;
+  --status-unknown: #72767d;
+  --status-online: #23a55a;
+  --status-offline: #f23f42;
+
+  /* ── Spacing ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Radius ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ── Typography ── */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ── Elevation (box-shadow) ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+
+  /* ── Motion ── */
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 350ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Nav ── */
+  --nav-rail-width: 72px;
+  --nav-panel-width: 240px;
+  --header-height: 52px;
+}
