@@ -32,6 +32,10 @@
       "apps/api/package.json",
       "nx/core/package-json"
     ],
+    "metadata.targetGroups.NPM Scripts.1": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
     "metadata.js": [
       "apps/api/package.json",
       "nx/core/package-json"
@@ -49,6 +53,34 @@
       "nx/core/package-json"
     ],
     "targets": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.executor": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.options": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.metadata": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.options.script": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.metadata.scriptContent": [
+      "apps/api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test:e2e.metadata.runCommand": [
       "apps/api/package.json",
       "nx/core/package-json"
     ],
@@ -93,6 +125,10 @@
       "nx/core/project-json"
     ],
     "targets.dev.options": [
+      "apps/api/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.dev.continuous": [
       "apps/api/project.json",
       "nx/core/project-json"
     ],
@@ -427,6 +463,10 @@
       "nx/core/project-json"
     ],
     "targets.dev.options": [
+      "apps/web/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.dev.continuous": [
       "apps/web/project.json",
       "nx/core/project-json"
     ],

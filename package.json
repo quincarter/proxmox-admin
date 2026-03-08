@@ -14,7 +14,8 @@
     "build:web": "nx run web:build",
     "build:api": "nx run api:build",
     "test": "nx run-many --target=test",
-    "lint": "nx run-many --target=lint"
+    "lint": "nx run-many --target=lint",
+    "postinstall": "node -e \"const fs=require('fs'),p='node_modules/@open-wc/testing/node_modules/@esm-bundle/chai/chai.js';if(!fs.existsSync(p)){fs.symlinkSync('esm/chai.js',p)}\""
   },
   "devDependencies": {
     "nx": "^22.5.4",

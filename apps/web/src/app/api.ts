@@ -54,6 +54,7 @@ export const authApi = {
       username: string;
       realm: string;
       serverId: string;
+      server: import("@proxmox-admin/types").ServerConnection;
       expiresAt: number;
     }>("/auth/session"),
 };
@@ -64,6 +65,10 @@ export const nodesApi = {
   list: () => request<import("@proxmox-admin/types").NodeSummary[]>("/nodes"),
   get: (node: string) =>
     request<import("@proxmox-admin/types").NodeDetail>(`/nodes/${node}`),
+  getTasks: (node: string) =>
+    request<import("@proxmox-admin/types").TaskSummary[]>(
+      `/nodes/${node}/tasks`,
+    ),
 };
 
 // ── Guests ────────────────────────────────────────────────────────────────────
@@ -76,6 +81,10 @@ export const guestsApi = {
     request<import("@proxmox-admin/types").LxcConfig>(
       `/nodes/${node}/lxc/${vmid}`,
     ),
+  getLxcStatus: (node: string, vmid: number) =>
+    request<import("@proxmox-admin/types").GuestCurrentStatus>(
+      `/nodes/${node}/lxc/${vmid}/status`,
+    ),
   lxcAction: (
     node: string,
     vmid: number,
@@ -87,6 +96,14 @@ export const guestsApi = {
     }),
   listQemu: (node: string) =>
     request<import("@proxmox-admin/types").QemuGuest[]>(`/nodes/${node}/qemu`),
+  getQemuConfig: (node: string, vmid: number) =>
+    request<import("@proxmox-admin/types").QemuConfig>(
+      `/nodes/${node}/qemu/${vmid}`,
+    ),
+  getQemuStatus: (node: string, vmid: number) =>
+    request<import("@proxmox-admin/types").GuestCurrentStatus>(
+      `/nodes/${node}/qemu/${vmid}/status`,
+    ),
   qemuAction: (
     node: string,
     vmid: number,

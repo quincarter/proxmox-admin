@@ -14,6 +14,9 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // SPA fallback: serve index.html for all non-asset requests so deep links
+    // and page refreshes work correctly with @lit-labs/router's client-side routing.
+    historyApiFallback: true,
     proxy: {
       "/api": {
         target: "http://localhost:3000",

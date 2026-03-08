@@ -6,6 +6,8 @@ import type {
   LxcGuest,
   QemuGuest,
   LxcConfig,
+  QemuConfig,
+  GuestCurrentStatus,
   GuestAction,
 } from "@proxmox-admin/types";
 
@@ -79,5 +81,45 @@ export class GuestsService {
       client,
       `/nodes/${node}/${typeSegment}/${vmid}/status/${action}`,
     );
+  }
+
+  async getLxcStatus(
+    node: string,
+    vmid: number,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<GuestCurrentStatus> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    const status = await this.http.get<
+      Omit<GuestCurrentStatus, "vmid" | "node" | "type">
+    >(client, `/nodes/${node}/lxc/${vmid}/status/current`);
+    return { ...status, vmid, node, type: "lxc" };
+  }
+
+  async getQemuConfig(
+    node: string,
+    vmid: number,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<QemuConfig> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    const config = await this.http.get<Omit<QemuConfig, "vmid" | "node">>(
+      client,
+      `/nodes/${node}/qemu/${vmid}/config`,
+    );
+    return { ...config, vmid, node } as QemuConfig;
+  }
+
+  async getQemuStatus(
+    node: string,
+    vmid: number,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<GuestCurrentStatus> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    const status = await this.http.get<
+      Omit<GuestCurrentStatus, "vmid" | "node" | "type">
+    >(client, `/nodes/${node}/qemu/${vmid}/status/current`);
+    return { ...status, vmid, node, type: "qemu" };
   }
 }

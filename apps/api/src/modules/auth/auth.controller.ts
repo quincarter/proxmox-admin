@@ -74,6 +74,7 @@ export class AuthController {
         username: session.username,
         realm: session.realm,
         serverId: session.serverId,
+        server: session.server,
         expiresAt: session.expiresAt,
       },
     };

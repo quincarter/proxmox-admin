@@ -19,6 +19,7 @@ interface ActiveSession {
   ticket: string;
   csrfToken: string;
   expiresAt: number;
+  server: ServerConnection;
 }
 
 @Injectable()
@@ -106,6 +107,16 @@ export class AuthService {
     const sessionId = uuidv4();
     const expiresAt = Date.now() + 2 * 60 * 60 * 1000; // 2 hours
 
+    const serverConn: ServerConnection = {
+      id: server.id,
+      label: server.label,
+      host: server.host,
+      port: server.port,
+      tlsMode: server.tlsMode as ServerConnection["tlsMode"],
+      lastConnectedAt: Date.now(),
+      active: true,
+    };
+
     this.sessions.set(sessionId, {
       id: sessionId,
       serverId: server.id,
@@ -114,6 +125,7 @@ export class AuthService {
       ticket: credentials.ticket,
       csrfToken: credentials.csrfToken,
       expiresAt,
+      server: serverConn,
     });
 
     // Audit log (only for persisted servers)
@@ -137,16 +149,6 @@ export class AuthService {
         this.logger.warn("Failed to write audit log", err);
       }
     }
-
-    const serverConn: ServerConnection = {
-      id: server.id,
-      label: server.label,
-      host: server.host,
-      port: server.port,
-      tlsMode: server.tlsMode as ServerConnection["tlsMode"],
-      lastConnectedAt: Date.now(),
-      active: true,
-    };
 
     return {
       sessionId,

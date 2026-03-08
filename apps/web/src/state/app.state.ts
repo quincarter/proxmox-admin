@@ -15,17 +15,14 @@ export const isAuthenticated = computed(() => session.value !== null);
 
 // ── Navigation ────────────────────────────────────────────────────────────────
 
-export type AppRoute =
-  | "login"
-  | "dashboard"
-  | "nodes"
-  | "node-detail"
-  | "lxc"
-  | "lxc-detail"
-  | "storage"
-  | "storage-detail";
-
-export const currentRoute = signal<AppRoute>("login");
+/**
+ * Navigate to a URL path. Updates the browser address bar and triggers the
+ * @lit-labs/router via a synthetic popstate event.
+ */
+export function navigate(path: string): void {
+  history.pushState({}, "", path);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+}
 
 // ── Global UI ─────────────────────────────────────────────────────────────────
 
@@ -55,5 +52,5 @@ export function addToast(
 
 export function clearSession(): void {
   session.value = null;
-  currentRoute.value = "login";
+  navigate("/login");
 }

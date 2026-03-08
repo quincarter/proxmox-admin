@@ -1,7 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ProxmoxHttpService } from "../proxmox/proxmox-http.service";
 import { ProxmoxService } from "../proxmox/proxmox.service";
-import type { NodeSummary, NodeDetail } from "@proxmox-admin/types";
+import type {
+  NodeSummary,
+  NodeDetail,
+  TaskSummary,
+} from "@proxmox-admin/types";
 
 @Injectable()
 export class NodesService {
@@ -44,5 +48,18 @@ export class NodesService {
       version,
       subscription,
     };
+  }
+
+  async getNodeTasks(
+    nodeName: string,
+    serverRef: Parameters<ProxmoxService["buildAuthenticatedClient"]>[0],
+    session: Parameters<ProxmoxService["buildAuthenticatedClient"]>[1],
+    limit = 50,
+  ): Promise<TaskSummary[]> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    return this.http.get<TaskSummary[]>(
+      client,
+      `/nodes/${nodeName}/tasks?limit=${limit}`,
+    );
   }
 }

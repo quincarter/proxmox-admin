@@ -107,6 +107,57 @@ export class GuestsController {
     return { data: { upid } };
   }
 
+  @Get("lxc/:vmid/status")
+  async getLxcStatus(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    return {
+      data: await this.guests.getLxcStatus(
+        node,
+        vmid,
+        serverRef,
+        this.getSession(req),
+      ),
+    };
+  }
+
+  @Get("qemu/:vmid")
+  async getQemuConfig(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    return {
+      data: await this.guests.getQemuConfig(
+        node,
+        vmid,
+        serverRef,
+        this.getSession(req),
+      ),
+    };
+  }
+
+  @Get("qemu/:vmid/status")
+  async getQemuStatus(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    return {
+      data: await this.guests.getQemuStatus(
+        node,
+        vmid,
+        serverRef,
+        this.getSession(req),
+      ),
+    };
+  }
+
   @Get("qemu")
   async listQemu(
     @Param("node") node: string,

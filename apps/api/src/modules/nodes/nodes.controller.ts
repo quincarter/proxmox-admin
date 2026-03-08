@@ -61,4 +61,19 @@ export class NodesController {
     };
     return { data: await this.nodes.getNodeDetail(node, serverRef, session) };
   }
+
+  @Get(":node/tasks")
+  async getNodeTasks(
+    @Param("node") node: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    const session = {
+      ticket: req.session.ticket,
+      csrfToken: req.session.csrfToken,
+      username: req.session.username,
+      expire: req.session.expiresAt,
+    };
+    return { data: await this.nodes.getNodeTasks(node, serverRef, session) };
+  }
 }
