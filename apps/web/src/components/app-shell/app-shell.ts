@@ -9,6 +9,7 @@ import {
   toasts,
 } from "../../state/app.state.ts";
 import { authApi } from "../../app/api.ts";
+import { connectEventStream, sseStatus } from "../../app/event-stream.ts";
 import "../nav-rail/nav-rail.ts";
 import "../status-badge/status-badge.ts";
 import { AppShellStyles } from "./app-shell.styles.ts";
@@ -119,6 +120,17 @@ export class App extends SignalWatcher(LitElement) {
       },
     },
 
+    // SSH terminal popup (standalone pop-out window)
+    {
+      path: "/ssh-terminal/:sessionId",
+      render: ({ sessionId }) =>
+        html`<pxa-ssh-popup .sessionId=${sessionId ?? ""}></pxa-ssh-popup>`,
+      enter: async () => {
+        await import("../../features/ssh-popup/ssh-popup.ts");
+        return true;
+      },
+    },
+
     // Storage
     {
       path: "/storage",
@@ -158,6 +170,7 @@ export class App extends SignalWatcher(LitElement) {
         server: s.server,
         expiresAt: s.expiresAt,
       };
+      connectEventStream();
       // Stay on whatever URL the user requested; redirect bare / → /dashboard
       const path = location.pathname;
       if (path === "/" || path === "") {
@@ -210,6 +223,10 @@ export class App extends SignalWatcher(LitElement) {
                           ${session.value.server.label} —
                           ${session.value.username}@${session.value.realm}
                         </div>
+                        <div
+                          class="sse-indicator sse-${sseStatus.value}"
+                          title="Realtime stream: ${sseStatus.value}"
+                        ></div>
                       `
                     : nothing}
                 </div>

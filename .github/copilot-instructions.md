@@ -79,6 +79,10 @@ Prefer information-dense, operational UI patterns over decorative or consumer-st
 - Favor predictable state flow and clear component APIs.
 - Keep styling maintainable and purposeful; avoid default starter styles.
 
+## Verification Workflow
+
+**Always run `yarn verify` during all feature development to ensure you are meeting all project requirements.** This command runs lint, build, and test for all packages and should be used before every commit, PR, or merge.
+
 ## Development Workflow
 
 - Develop types first for each feature and component set.

@@ -20,6 +20,10 @@ interface ActiveSession {
   csrfToken: string;
   expiresAt: number;
   server: ServerConnection;
+  /** OS-level SSH username, derived from PAM login. Only set for realm=pam. */
+  sshUsername?: string;
+  /** OS-level SSH password, kept in-memory only (same lifetime as Proxmox ticket). */
+  sshPassword?: string;
 }
 
 @Injectable()
@@ -126,6 +130,12 @@ export class AuthService {
       csrfToken: credentials.csrfToken,
       expiresAt,
       server: serverConn,
+      // For PAM users, store the OS-level SSH credentials in-memory so the SSH
+      // terminal can auto-connect without prompting.  These are never persisted.
+      ...(dto.realm === "pam" && {
+        sshUsername: credentials.username.split("@")[0],
+        sshPassword: dto.password,
+      }),
     });
 
     // Audit log (only for persisted servers)

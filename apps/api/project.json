@@ -36,6 +36,10 @@
     "db:studio": {
       "command": "npx prisma studio",
       "options": { "cwd": "{projectRoot}" }
+    },
+    "verify": {
+      "command": "npm run verify",
+      "options": { "cwd": "{projectRoot}" }
     }
   }
 }

@@ -1,7 +1,9 @@
-import { LitElement, html, type CSSResultOrNative } from "lit";
+import { LitElement, html, svg, type CSSResultOrNative } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Task } from "@lit/task";
 import { nodesApi, guestsApi, storageApi } from "../../app/api.ts";
+import { liveNodes } from "../../app/event-stream.ts";
+import type { NodeSummary } from "@proxmox-admin/types";
 import "../../components/status-badge/status-badge.ts";
 import { DashboardViewStyles } from "./dashboard-view.styles.ts";
 
@@ -37,18 +39,125 @@ export class DashboardView extends LitElement {
     return `${bytes} B`;
   }
 
+  private _donut(fraction: number, size = 96) {
+    const r = 34;
+    const cx = size / 2;
+    const cy = size / 2;
+    const circ = 2 * Math.PI * r;
+    const f = Math.min(Math.max(fraction, 0), 1);
+    const filled = circ * f;
+    const color =
+      f > 0.85
+        ? "var(--color-danger)"
+        : f > 0.65
+          ? "var(--color-warning)"
+          : "var(--color-success)";
+    return svg`
+      <svg
+        width="${size}"
+        height="${size}"
+        viewBox="0 0 ${size} ${size}"
+        style="flex-shrink:0"
+      >
+        <circle
+          cx="${cx}" cy="${cy}" r="${r}"
+          fill="none"
+          stroke="var(--color-bg-overlay)"
+          stroke-width="8"
+        />
+        <circle
+          cx="${cx}" cy="${cy}" r="${r}"
+          fill="none"
+          stroke="${color}"
+          stroke-width="8"
+          stroke-dasharray="${filled} ${circ - filled}"
+          stroke-dashoffset="${circ * 0.25}"
+          stroke-linecap="round"
+        />
+        <text
+          x="${cx}" y="${cy}"
+          text-anchor="middle"
+          dominant-baseline="central"
+          fill="${color}"
+          font-size="14"
+          font-weight="700"
+          font-family="var(--font-mono)"
+        >${Math.round(f * 100)}%</text>
+      </svg>
+    `;
+  }
+
+  private _renderDcMetrics(nodes: NodeSummary[]) {
+    // Guard: only nodes that are online AND have usage data (offline nodes
+    // may lack a usage object entirely when returned by the Proxmox API).
+    const online = nodes.filter((n) => n.status === "online" && n.usage);
+    const totalCores = online.reduce((s, n) => s + (n.usage?.maxcpu ?? 0), 0);
+    const usedCores = online.reduce(
+      (s, n) => s + (n.usage?.cpu ?? 0) * (n.usage?.maxcpu ?? 0),
+      0,
+    );
+    const totalMem = online.reduce((s, n) => s + (n.usage?.maxmem ?? 0), 0);
+    const usedMem = online.reduce((s, n) => s + (n.usage?.mem ?? 0), 0);
+    const cpuFrac = totalCores > 0 ? usedCores / totalCores : 0;
+    const memFrac = totalMem > 0 ? usedMem / totalMem : 0;
+    const isLive = liveNodes.value !== null;
+
+    return html`
+      <div class="dc-section">
+        <div class="dc-section-header">
+          <span class="section-title">Datacenter</span>
+          ${isLive
+            ? html`<span class="dc-live-badge">
+                <span class="dc-live-dot"></span>Live
+              </span>`
+            : ""}
+        </div>
+        <div class="dc-metrics">
+          <div class="dc-card">
+            ${this._donut(cpuFrac)}
+            <div class="dc-info">
+              <div class="dc-label">CPU</div>
+              <div class="dc-value">${(cpuFrac * 100).toFixed(1)}%</div>
+              <div class="dc-sub">
+                ${usedCores.toFixed(1)} / ${totalCores} cores
+              </div>
+              <div class="dc-sub">
+                ${online.length} node${online.length !== 1 ? "s" : ""} online
+              </div>
+            </div>
+          </div>
+          <div class="dc-card">
+            ${this._donut(memFrac)}
+            <div class="dc-info">
+              <div class="dc-label">Memory</div>
+              <div class="dc-value">${(memFrac * 100).toFixed(1)}%</div>
+              <div class="dc-sub">
+                ${this._formatBytes(usedMem)} / ${this._formatBytes(totalMem)}
+              </div>
+              <div class="dc-sub">
+                ${online.length} node${online.length !== 1 ? "s" : ""} online
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   render() {
     return html`
       <h1>Overview</h1>
 
       ${this._nodesTask.render({
         pending: () => html`<div class="loading">Loading nodes…</div>`,
-        complete: (nodes) => {
+        complete: (polledNodes) => {
+          const nodes = liveNodes.value ?? polledNodes;
           const online = nodes.filter((n) => n.status === "online").length;
           const guests = this._guestsTask.value ?? [];
           const running = guests.filter((g) => g.status === "running").length;
           const storage = this._storageTask.value ?? [];
           return html`
+            ${this._renderDcMetrics(nodes)}
             <div class="grid">
               <div class="stat-card">
                 <div class="stat-label">Nodes</div>

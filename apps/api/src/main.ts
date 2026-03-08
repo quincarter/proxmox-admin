@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
+import { WsAdapter } from "@nestjs/platform-ws";
 import * as cookieParser from "cookie-parser";
 import { AppModule } from "./app.module";
 
@@ -10,6 +11,9 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix("api");
+
+  // Enable raw WebSocket support (used by the SSH terminal gateway at /ws/ssh)
+  app.useWebSocketAdapter(new WsAdapter(app));
 
   app.use(cookieParser());
 
@@ -21,8 +25,14 @@ async function bootstrap() {
     }),
   );
 
+  // CORS_ORIGIN may be a comma-separated list of allowed origins so that
+  // the same image works for local dev (http://localhost:5173), the
+  // docker --full stack (http://localhost:5173), and the Caddy HTTPS proxy
+  // (https://localhost) without rebuilding.
+  const rawOrigin = process.env.CORS_ORIGIN ?? "http://localhost:5173";
+  const allowedOrigins = rawOrigin.split(",").map((o) => o.trim());
   app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? "http://localhost:5173",
+    origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
     credentials: true,
   });
 

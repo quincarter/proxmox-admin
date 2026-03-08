@@ -162,4 +162,94 @@ export const LxcDetailViewStyles = css`
     color: var(--color-danger);
     font-size: 13px;
   }
+
+  /* ── SSH terminal ────────────────────────────────────────────────────── */
+
+  .ssh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-bg-overlay);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-bottom: var(--space-4);
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  .ssh-btn:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+  }
+
+  .ssh-terminal-panel {
+    margin-bottom: var(--space-4);
+    height: 460px;
+    min-height: 200px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-bg-overlay);
+  }
+
+  .ssh-terminal-panel pxa-ssh-terminal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Tabs ───────────────────────────────────────────────────────────── */
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--color-bg-overlay);
+    margin-bottom: var(--space-5);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    padding: var(--space-2) var(--space-4);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition:
+      color 0.15s,
+      border-bottom-color 0.15s;
+  }
+
+  .tab-btn:hover {
+    color: var(--color-text-primary);
+  }
+
+  .tab-btn.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .tab-content {
+    animation: fadeIn 0.15s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;

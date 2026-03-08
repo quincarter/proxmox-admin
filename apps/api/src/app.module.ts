@@ -7,6 +7,8 @@ import { NodesModule } from "./modules/nodes/nodes.module";
 import { GuestsModule } from "./modules/guests/guests.module";
 import { StorageModule } from "./modules/storage/storage.module";
 import { DiscoveryModule } from "./modules/discovery/discovery.module";
+import { SshModule } from "./modules/ssh/ssh.module";
+import { EventsModule } from "./modules/events/events.module";
 import { PrismaModule } from "./prisma/prisma.module";
 
 @Module({
@@ -23,6 +25,8 @@ import { PrismaModule } from "./prisma/prisma.module";
     GuestsModule,
     StorageModule,
     DiscoveryModule,
+    SshModule,
+    EventsModule,
   ],
 })
 export class AppModule {}

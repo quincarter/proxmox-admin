@@ -1,0 +1,24 @@
+{
+  "name": "worker",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/worker/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "command": "tsc",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "test": {
+      "command": "jest",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "lint": {
+      "command": "tsc --noEmit",
+      "options": { "cwd": "{projectRoot}" }
+    },
+    "verify": {
+      "command": "npm run verify",
+      "options": { "cwd": "{projectRoot}" }
+    }
+  }
+}

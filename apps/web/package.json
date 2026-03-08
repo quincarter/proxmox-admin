@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "verify": "npm run lint && npm run build && npm run test"
   },
   "dependencies": {
     "@lit-labs/preact-signals": "^1.0.3",
@@ -17,8 +18,11 @@
     "@lit/context": "^1.1.6",
     "@lit/task": "^1.0.3",
     "@proxmox-admin/types": "workspace:*",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
     "chart.js": "^4.5.1",
-    "lit": "^3.3.2"
+    "lit": "^3.3.2",
+    "sshclient-wasm": "^0.1.5"
   },
   "devDependencies": {
     "@esm-bundle/chai": "4.3.4-fix.0",

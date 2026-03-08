@@ -10,3 +10,9 @@ export * from "./proxmox/cluster";
 
 // BFF API contract types
 export * from "./bff/api";
+
+// SSH terminal feature
+export * from "./ssh";
+
+// Server-Sent Events
+export * from "./events";

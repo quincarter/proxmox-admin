@@ -165,58 +165,62 @@ export class NodeDetailView extends SignalWatcher(LitElement) {
           ${this._lxcTask.render({
             pending: () => html`<div class="loading">Loading containers…</div>`,
             error: (e) => html`<div class="error">${String(e)}</div>`,
-              complete: (containers) => {
-                if (!containers.length) {
-                  return html`<div class="loading">No containers on this node.</div>`;
-                }
-                // Ensure each container has the node property set
-                const containersWithNode = containers.map((c) => ({ ...c, node: this.node }));
-                return html`
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>VMID</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>CPU</th>
-                        <th>Memory</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${containersWithNode.map(
-                        (c) => html`
-                          <tr
-                            @click=${() =>
-                              navigate(`/lxc/${c.node}/${c.vmid}`)}
-                          >
-                            <td class="vmid">${c.vmid}</td>
-                            <td class="name">${c.name}</td>
-                            <td>
-                              <pxa-status-badge
-                                status=${c.status}
-                              ></pxa-status-badge>
-                            </td>
-                            <td class="mono">${(c.cpu * 100).toFixed(1)}%</td>
-                            <td class="mono">
-                              ${this._fmt(c.mem)} / ${this._fmt(c.maxmem)}
-                            </td>
-                            <td @click=${(e: Event) => e.stopPropagation()}>
-                              <pxa-action-panel
-                                node=${c.node}
-                                .vmid=${c.vmid}
-                                type="lxc"
-                                status=${c.status}
-                                @action-done=${this._onActionDone}
-                              ></pxa-action-panel>
-                            </td>
-                          </tr>
-                        `,
-                      )}
-                    </tbody>
-                  </table>
-                `;
-              },
+            complete: (containers) => {
+              if (!containers.length) {
+                return html`<div class="loading">
+                  No containers on this node.
+                </div>`;
+              }
+              // Ensure each container has the node property set
+              const containersWithNode = containers.map((c) => ({
+                ...c,
+                node: this.node,
+              }));
+              return html`
+                <table>
+                  <thead>
+                    <tr>
+                      <th>VMID</th>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>CPU</th>
+                      <th>Memory</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${containersWithNode.map(
+                      (c) => html`
+                        <tr
+                          @click=${() => navigate(`/lxc/${c.node}/${c.vmid}`)}
+                        >
+                          <td class="vmid">${c.vmid}</td>
+                          <td class="name">${c.name}</td>
+                          <td>
+                            <pxa-status-badge
+                              status=${c.status}
+                            ></pxa-status-badge>
+                          </td>
+                          <td class="mono">${(c.cpu * 100).toFixed(1)}%</td>
+                          <td class="mono">
+                            ${this._fmt(c.mem)} / ${this._fmt(c.maxmem)}
+                          </td>
+                          <td @click=${(e: Event) => e.stopPropagation()}>
+                            <pxa-action-panel
+                              node=${c.node}
+                              .vmid=${c.vmid}
+                              type="lxc"
+                              status=${c.status}
+                              @action-done=${this._onActionDone}
+                            ></pxa-action-panel>
+                          </td>
+                        </tr>
+                      `,
+                    )}
+                  </tbody>
+                </table>
+              `;
+            },
           })}
         </div>
       </div>
@@ -251,10 +255,7 @@ export class NodeDetailView extends SignalWatcher(LitElement) {
                   <tbody>
                     ${vmsWithNode.map(
                       (v) => html`
-                        <tr
-                          @click=${() =>
-                            navigate(`/vm/${v.node}/${v.vmid}`)}
-                        >
+                        <tr @click=${() => navigate(`/vm/${v.node}/${v.vmid}`)}>
                           <td class="vmid">${v.vmid}</td>
                           <td class="name">${v.name}</td>
                           <td>

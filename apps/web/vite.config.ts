@@ -22,6 +22,11 @@ export default defineConfig({
         target: "http://localhost:3000",
         changeOrigin: true,
       },
+      // WebSocket proxy for the SSH terminal gateway.
+      "/ws": {
+        target: "ws://localhost:3000",
+        ws: true,
+      },
     },
   },
   build: {

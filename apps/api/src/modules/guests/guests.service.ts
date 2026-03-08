@@ -6,7 +6,9 @@ import type {
   LxcGuest,
   QemuGuest,
   LxcConfig,
+  LxcConfigUpdate,
   QemuConfig,
+  QemuConfigUpdate,
   GuestCurrentStatus,
   GuestAction,
 } from "@proxmox-admin/types";
@@ -121,5 +123,53 @@ export class GuestsService {
       Omit<GuestCurrentStatus, "vmid" | "node" | "type">
     >(client, `/nodes/${node}/qemu/${vmid}/status/current`);
     return { ...status, vmid, node, type: "qemu" };
+  }
+
+  async updateQemuConfig(
+    node: string,
+    vmid: number,
+    update: QemuConfigUpdate,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<void> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    await this.http.put<null>(
+      client,
+      `/nodes/${node}/qemu/${vmid}/config`,
+      update,
+    );
+  }
+
+  async updateLxcConfig(
+    node: string,
+    vmid: number,
+    update: LxcConfigUpdate,
+    serverRef: ServerRef,
+    session: SessionCreds,
+  ): Promise<void> {
+    const client = this.proxmox.buildAuthenticatedClient(serverRef, session);
+    await this.http.put<null>(
+      client,
+      `/nodes/${node}/lxc/${vmid}/config`,
+      update,
+    );
+  }
+
+  async getLxcSshCommand(
+    _node: string,
+    vmid: number,
+    serverRef: ServerRef,
+  ): Promise<string> {
+    const host = serverRef.host;
+    return `ssh root@${host} pct enter ${vmid}`;
+  }
+
+  async getQemuSshCommand(
+    _node: string,
+    vmid: number,
+    serverRef: ServerRef,
+  ): Promise<string> {
+    const host = serverRef.host;
+    return `ssh root@${host} qm terminal ${vmid}`;
   }
 }

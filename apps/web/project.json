@@ -21,6 +21,10 @@
     "lint": {
       "command": "tsc --noEmit",
       "options": { "cwd": "{projectRoot}" }
+    },
+    "verify": {
+      "command": "npm run verify",
+      "options": { "cwd": "{projectRoot}" }
     }
   }
 }

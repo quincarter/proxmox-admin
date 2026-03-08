@@ -6,7 +6,10 @@
     "production": [
       "default",
       "!{projectRoot}/**/*.spec.ts",
-      "!{projectRoot}/jest.config.*"
+      "!{projectRoot}/**/*.test.ts",
+      "!{projectRoot}/**/*.e2e-spec.ts",
+      "!{projectRoot}/jest.config.*",
+      "!{projectRoot}/vitest.config.*"
     ],
     "sharedGlobals": []
   },
@@ -27,6 +30,11 @@
     },
     "lint": {
       "inputs": ["default"],
+      "cache": true
+    },
+    "verify": {
+      "dependsOn": ["lint", "build", "test"],
+      "inputs": ["default", "^production"],
       "cache": true
     }
   },

@@ -15,7 +15,15 @@
     "build:api": "nx run api:build",
     "test": "nx run-many --target=test",
     "lint": "nx run-many --target=lint",
-    "postinstall": "node -e \"const fs=require('fs'),p='node_modules/@open-wc/testing/node_modules/@esm-bundle/chai/chai.js';if(!fs.existsSync(p)){fs.symlinkSync('esm/chai.js',p)}\""
+    "postinstall": "node -e \"const fs=require('fs'),p='node_modules/@open-wc/testing/node_modules/@esm-bundle/chai/chai.js';if(!fs.existsSync(p)){fs.symlinkSync('esm/chai.js',p)}\"",
+    "verify": "nx run-many --target=verify --parallel",
+    "verify:web": "nx run web:verify",
+    "verify:api": "nx run api:verify",
+    "infra:up": "bash scripts/dev-up.sh",
+    "infra:down": "bash scripts/dev-up.sh --down",
+    "infra:logs": "bash scripts/dev-up.sh --logs",
+    "docker:full": "bash scripts/dev-up.sh --full",
+    "docker:all": "bash scripts/dev-up.sh --all"
   },
   "devDependencies": {
     "nx": "^22.5.4",

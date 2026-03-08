@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Param,
   ParseIntPipe,
   Body,
@@ -9,15 +10,78 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { Request } from "express";
-import { IsIn } from "class-validator";
+import {
+  IsIn,
+  IsOptional,
+  IsString,
+  IsBoolean,
+  IsNumber,
+} from "class-validator";
 import { SessionGuard } from "../../guards/session.guard";
 import { GuestsService } from "./guests.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import type { GuestAction } from "@proxmox-admin/types";
+import type {
+  GuestAction,
+  QemuConfigUpdate,
+  LxcConfigUpdate,
+} from "@proxmox-admin/types";
 
 class GuestActionDto {
   @IsIn(["start", "stop", "shutdown", "reboot", "suspend", "resume", "reset"])
   action!: GuestAction;
+}
+
+class LxcConfigUpdateDto implements LxcConfigUpdate {
+  @IsOptional() @IsString() hostname?: string;
+  @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() tags?: string;
+  @IsOptional() @IsBoolean() onboot?: boolean;
+  @IsOptional() @IsString() startup?: string;
+  @IsOptional() @IsString() ostype?: string;
+  @IsOptional() @IsString() arch?: string;
+  @IsOptional() @IsBoolean() console?: boolean;
+  @IsOptional() @IsNumber() tty?: number;
+  @IsOptional() @IsString() cmode?: string;
+  @IsOptional() @IsBoolean() protection?: boolean;
+  @IsOptional() @IsString() features?: string;
+  @IsOptional() @IsNumber() memory?: number;
+  @IsOptional() @IsNumber() swap?: number;
+  @IsOptional() @IsNumber() cores?: number;
+  @IsOptional() @IsNumber() cpulimit?: number;
+  @IsOptional() @IsNumber() cpuunits?: number;
+}
+
+class QemuConfigUpdateDto implements QemuConfigUpdate {
+  @IsOptional() @IsString() name?: string;
+  @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() tags?: string;
+  @IsOptional() @IsBoolean() onboot?: boolean;
+  @IsOptional() @IsString() startup?: string;
+  @IsOptional() @IsString() ostype?: string;
+  @IsOptional() @IsString() boot?: string;
+  @IsOptional() @IsBoolean() tablet?: boolean;
+  @IsOptional() @IsString() hotplug?: string;
+  @IsOptional() @IsBoolean() acpi?: boolean;
+  @IsOptional() @IsBoolean() kvm?: boolean;
+  @IsOptional() @IsBoolean() freeze?: boolean;
+  @IsOptional() @IsBoolean() localtime?: boolean;
+  @IsOptional() @IsString() rtcbase?: string;
+  @IsOptional() @IsString() smbios1?: string;
+  @IsOptional() @IsString() agent?: string;
+  @IsOptional() @IsBoolean() protection?: boolean;
+  @IsOptional() @IsString() spice_enhancements?: string;
+  @IsOptional() @IsString() vmstatestorage?: string;
+  @IsOptional() @IsNumber() memory?: number;
+  @IsOptional() @IsNumber() balloon?: number;
+  @IsOptional() @IsNumber() cores?: number;
+  @IsOptional() @IsNumber() sockets?: number;
+  @IsOptional() @IsNumber() vcpus?: number;
+  @IsOptional() @IsString() cpu?: string;
+  @IsOptional() @IsBoolean() numa?: boolean;
+  @IsOptional() @IsString() bios?: string;
+  @IsOptional() @IsString() machine?: string;
+  @IsOptional() @IsString() vga?: string;
+  @IsOptional() @IsString() scsihw?: string;
 }
 
 interface AuthenticatedRequest extends Request {
@@ -186,6 +250,64 @@ export class GuestsController {
       this.getSession(req),
     );
     return { data: { upid } };
+  }
+
+  @Put("qemu/:vmid/config")
+  async updateQemuConfig(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Body() body: QemuConfigUpdateDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    await this.guests.updateQemuConfig(
+      node,
+      vmid,
+      body,
+      serverRef,
+      this.getSession(req),
+    );
+    return { data: null };
+  }
+
+  @Put("lxc/:vmid/config")
+  async updateLxcConfig(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Body() body: LxcConfigUpdateDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    await this.guests.updateLxcConfig(
+      node,
+      vmid,
+      body,
+      serverRef,
+      this.getSession(req),
+    );
+    return { data: null };
+  }
+
+  @Get("lxc/:vmid/ssh")
+  async getLxcSshCommand(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    const ssh = await this.guests.getLxcSshCommand(node, vmid, serverRef);
+    return { data: { ssh } };
+  }
+
+  @Get("qemu/:vmid/ssh")
+  async getQemuSshCommand(
+    @Param("node") node: string,
+    @Param("vmid", ParseIntPipe) vmid: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const serverRef = await this.resolveServerRef(req.session.serverId);
+    const ssh = await this.guests.getQemuSshCommand(node, vmid, serverRef);
+    return { data: { ssh } };
   }
 }
 

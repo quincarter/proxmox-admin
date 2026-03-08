@@ -29,6 +29,7 @@ describe("Guests endpoints", () => {
   beforeEach(() => {
     proxmoxHttp.get.mockReset();
     proxmoxHttp.post.mockReset();
+    proxmoxHttp.put.mockReset();
   });
 
   // ─── GET /api/guests ───────────────────────────────────────────────────────
@@ -449,6 +450,202 @@ describe("Guests endpoints", () => {
       await request(app.getHttpServer())
         .get("/api/nodes/pve/qemu/101/status")
         .set("Cookie", cookie)
+        .expect((res) => {
+          expect(res.status).toBeGreaterThanOrEqual(500);
+        });
+    });
+  });
+
+  describe("PUT /api/nodes/:node/qemu/:vmid/config", () => {
+    it("returns 401 with no cookie", async () => {
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .send({ memory: 4096 })
+        .expect(401);
+    });
+
+    it("returns 200 with data: null when Proxmox accepts the update", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({ memory: 4096, cores: 4 })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("forwards the correct path and body to the Proxmox client", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({ memory: 8192, cores: 8 })
+        .expect(200);
+
+      expect(proxmoxHttp.put).toHaveBeenCalledWith(
+        expect.anything(),
+        "/nodes/pve/qemu/101/config",
+        expect.objectContaining({ memory: 8192, cores: 8 }),
+      );
+    });
+
+    it("accepts boolean fields such as onboot and acpi", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({ onboot: true, acpi: false })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("accepts string fields such as name and ostype", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({ name: "renamed-vm", ostype: "l26" })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("accepts an empty body and returns 200", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({})
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("returns 400 when vmid is not a number", async () => {
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/notanumber/config")
+        .set("Cookie", cookie)
+        .send({ cores: 2 })
+        .expect(400);
+    });
+
+    it("propagates upstream errors as 500", async () => {
+      proxmoxHttp.put.mockRejectedValueOnce(
+        Object.assign(new Error("VM is locked"), {
+          response: { status: 500 },
+        }),
+      );
+
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/qemu/101/config")
+        .set("Cookie", cookie)
+        .send({ memory: 4096 })
+        .expect((res) => {
+          expect(res.status).toBeGreaterThanOrEqual(500);
+        });
+    });
+  });
+
+  // ─── PUT /api/nodes/:node/lxc/:vmid/config ────────────────────────────────
+
+  describe("PUT /api/nodes/:node/lxc/:vmid/config", () => {
+    it("returns 401 with no cookie", async () => {
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .send({ memory: 1024 })
+        .expect(401);
+    });
+
+    it("returns 200 with data: null when Proxmox accepts the update", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({ memory: 1024, cores: 2 })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("forwards the correct path and body to the Proxmox client", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({ memory: 2048, cores: 4 })
+        .expect(200);
+
+      expect(proxmoxHttp.put).toHaveBeenCalledWith(
+        expect.anything(),
+        "/nodes/pve/lxc/100/config",
+        expect.objectContaining({ memory: 2048, cores: 4 }),
+      );
+    });
+
+    it("accepts boolean fields such as onboot and protection", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({ onboot: true, protection: false })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("accepts string fields such as hostname and ostype", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({ hostname: "renamed-ct", ostype: "ubuntu" })
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("accepts an empty body and returns 200", async () => {
+      proxmoxHttp.put.mockResolvedValueOnce(null);
+
+      const res = await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({})
+        .expect(200);
+
+      expect(res.body.data).toBeNull();
+    });
+
+    it("returns 400 when vmid is not a number", async () => {
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/notanumber/config")
+        .set("Cookie", cookie)
+        .send({ cores: 2 })
+        .expect(400);
+    });
+
+    it("propagates upstream errors as 500", async () => {
+      proxmoxHttp.put.mockRejectedValueOnce(
+        Object.assign(new Error("container is locked"), {
+          response: { status: 500 },
+        }),
+      );
+
+      await request(app.getHttpServer())
+        .put("/api/nodes/pve/lxc/100/config")
+        .set("Cookie", cookie)
+        .send({ memory: 1024 })
         .expect((res) => {
           expect(res.status).toBeGreaterThanOrEqual(500);
         });

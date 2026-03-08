@@ -1,11 +1,13 @@
 import "reflect-metadata";
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { WsAdapter } from "@nestjs/platform-ws";
 import * as cookieParser from "cookie-parser";
 import * as request from "supertest";
 import { AppModule } from "../../src/app.module";
 import { PrismaService } from "../../src/prisma/prisma.service";
 import { ProxmoxHttpService } from "../../src/modules/proxmox/proxmox-http.service";
+import { EventsService } from "../../src/modules/events/events.service";
 
 // ─── Mock shapes ──────────────────────────────────────────────────────────────
 
@@ -77,21 +79,31 @@ export function buildMockProxmoxHttp(): MockProxmoxHttp {
   };
 }
 
-export async function createTestApp(): Promise<TestApp> {
+export async function createTestApp(
+  opts: { overrideEventsService?: Partial<EventsService> } = {},
+): Promise<TestApp> {
   const prisma = buildMockPrisma();
   const proxmoxHttp = buildMockProxmoxHttp();
 
-  const module: TestingModule = await Test.createTestingModule({
+  let builder = Test.createTestingModule({
     imports: [AppModule],
   })
     .overrideProvider(PrismaService)
     .useValue(prisma)
     .overrideProvider(ProxmoxHttpService)
-    .useValue(proxmoxHttp)
-    .compile();
+    .useValue(proxmoxHttp);
+
+  if (opts.overrideEventsService) {
+    builder = builder
+      .overrideProvider(EventsService)
+      .useValue(opts.overrideEventsService);
+  }
+
+  const module: TestingModule = await builder.compile();
 
   const app = module.createNestApplication();
   app.setGlobalPrefix("api");
+  app.useWebSocketAdapter(new WsAdapter(app));
   app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({

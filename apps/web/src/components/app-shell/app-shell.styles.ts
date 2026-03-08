@@ -49,6 +49,37 @@ export const AppShellStyles = css`
     gap: var(--space-2);
   }
 
+  /* SSE realtime status dot */
+  .sse-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background var(--duration-normal);
+  }
+  .sse-connected {
+    background: var(--color-success);
+    box-shadow: 0 0 6px var(--color-success);
+    animation: sse-pulse 2.5s ease-in-out infinite;
+  }
+  .sse-reconnecting {
+    background: var(--color-warning);
+    animation: sse-pulse 0.8s ease-in-out infinite;
+  }
+  .sse-connecting,
+  .sse-error {
+    background: var(--color-text-muted);
+  }
+  @keyframes sse-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
   .view-host {
     padding: var(--space-2) 0;
   }

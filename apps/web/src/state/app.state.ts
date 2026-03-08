@@ -1,5 +1,6 @@
 import { signal, computed } from "@lit-labs/preact-signals";
 import type { ServerConnection } from "@proxmox-admin/types";
+import { disconnectEventStream } from "../app/event-stream";
 
 // ── Auth / Session ────────────────────────────────────────────────────────────
 
@@ -51,6 +52,7 @@ export function addToast(
 }
 
 export function clearSession(): void {
+  disconnectEventStream();
   session.value = null;
   navigate("/login");
 }

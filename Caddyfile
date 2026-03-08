@@ -1,0 +1,45 @@
+# Caddyfile — HTTP/2 + HTTP/3 reverse proxy for proxmox-admin
+#
+# Run with: docker compose --profile caddy up
+# Then access the app at: https://localhost
+#
+# Caddy auto-provisions a locally-trusted TLS certificate on first start.
+# Install the Caddy root CA with: docker exec caddy caddy trust
+#
+# HTTP/2 multiplexing means the SSE stream at /api/events/stream and all other
+# requests share a single TCP connection per browser — no 6-connection limit.
+
+localhost {
+  # Reverse proxy the BFF API (includes /api/* and /ws/*)
+  handle /api/* {
+    reverse_proxy api:3000
+  }
+
+  # WebSocket proxy for the SSH terminal
+  handle /ws/* {
+    reverse_proxy api:3000 {
+      transport http {
+        versions h2c
+      }
+    }
+  }
+
+  # All other requests go to the web (SPA)
+  handle {
+    reverse_proxy web:80
+  }
+
+  # Enable access logging
+  log {
+    output stdout
+    level INFO
+  }
+
+  # Security headers
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "strict-origin-when-cross-origin"
+  }
+}

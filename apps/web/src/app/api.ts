@@ -74,6 +74,14 @@ export const nodesApi = {
 // ── Guests ────────────────────────────────────────────────────────────────────
 
 export const guestsApi = {
+  getLxcSsh: (node: string, vmid: number) =>
+    request<{ ssh: string }>(`/nodes/${node}/lxc/${vmid}/ssh`).then(
+      (r) => r.ssh,
+    ),
+  getQemuSsh: (node: string, vmid: number) =>
+    request<{ ssh: string }>(`/nodes/${node}/qemu/${vmid}/ssh`).then(
+      (r) => r.ssh,
+    ),
   listAll: () => request<import("@proxmox-admin/types").AnyGuest[]>("/guests"),
   listLxc: (node: string) =>
     request<import("@proxmox-admin/types").LxcGuest[]>(`/nodes/${node}/lxc`),
@@ -112,6 +120,24 @@ export const guestsApi = {
     request<{ upid: string }>(`/nodes/${node}/qemu/${vmid}/action`, {
       method: "POST",
       body: JSON.stringify({ action }),
+    }),
+  updateQemuConfig: (
+    node: string,
+    vmid: number,
+    update: import("@proxmox-admin/types").QemuConfigUpdate,
+  ) =>
+    request<null>(`/nodes/${node}/qemu/${vmid}/config`, {
+      method: "PUT",
+      body: JSON.stringify(update),
+    }),
+  updateLxcConfig: (
+    node: string,
+    vmid: number,
+    update: import("@proxmox-admin/types").LxcConfigUpdate,
+  ) =>
+    request<null>(`/nodes/${node}/lxc/${vmid}/config`, {
+      method: "PUT",
+      body: JSON.stringify(update),
     }),
 };
 

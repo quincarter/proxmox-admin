@@ -9,13 +9,16 @@
     "test": "jest",
     "test:e2e": "jest --config jest.e2e.config.ts --forceExit",
     "test:watch": "jest --watch",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "verify": "npm run lint && npm run build && npm run test"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.16",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.1.16",
     "@nestjs/platform-express": "^11.1.16",
+    "@nestjs/platform-ws": "^11.1.16",
+    "@nestjs/websockets": "^11.1.16",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "@proxmox-admin/types": "workspace:*",
@@ -24,10 +27,13 @@
     "class-validator": "^0.15.1",
     "cookie-parser": "^1.4.7",
     "https-proxy-agent": "^7.0.6",
+    "ioredis": "^5.10.0",
     "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "uuid": "^13.0.0"
+    "ssh2": "^1.17.0",
+    "uuid": "^13.0.0",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.16",
@@ -37,8 +43,10 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^25.3.5",
     "@types/pg": "^8.18.0",
+    "@types/ssh2": "^1",
     "@types/supertest": "^7.2.0",
     "@types/uuid": "^11.0.0",
+    "@types/ws": "^8.18.1",
     "jest": "^30.2.0",
     "prisma": "^7.4.2",
     "supertest": "^7.2.2",

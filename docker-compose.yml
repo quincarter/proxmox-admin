@@ -16,6 +16,20 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   api:
     build:
       context: .
@@ -25,13 +39,41 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       NODE_ENV: production
       DATABASE_URL: "postgresql://proxmox_admin:proxmox_admin@postgres:5432/proxmox_admin"
       PORT: 3000
-      CORS_ORIGIN: http://localhost:5173
+      CORS_ORIGIN: "http://localhost:5173,https://localhost"
+      REDIS_URL: "redis://redis:6379"
       # PROXMOX_HINTS: 192.168.1.10:8006
     restart: unless-stopped
+
+  # Polling worker: authenticates with a Proxmox server, collects node/guest/
+  # storage/task data on an interval, and publishes SSE events to Redis.
+  # Configure PROXMOX_* env vars to point at your Proxmox instance.
+  worker:
+    build:
+      context: apps/worker
+      dockerfile: Dockerfile
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: "redis://redis:6379"
+      # Required — set these for your Proxmox server:
+      PROXMOX_HOST: "${PROXMOX_HOST:-}"
+      PROXMOX_PORT: "${PROXMOX_PORT:-8006}"
+      PROXMOX_USER: "${PROXMOX_USER:-root}"
+      PROXMOX_PASS: "${PROXMOX_PASS:-}"
+      PROXMOX_REALM: "${PROXMOX_REALM:-pam}"
+      PROXMOX_TLS_REJECT_UNAUTHORIZED: "${PROXMOX_TLS_REJECT_UNAUTHORIZED:-false}"
+      POLL_INTERVAL_MS: "${POLL_INTERVAL_MS:-15000}"
+      LOG_LEVEL: "info"
+    restart: unless-stopped
+    profiles:
+      - worker # opt-in: docker compose --profile worker up
 
   web:
     build:
@@ -43,5 +85,29 @@ services:
       - api
     restart: unless-stopped
 
+  # Caddy: HTTP/2 (and HTTP/3 QUIC) reverse proxy.
+  # Enables HTTP/2 multiplexing for the SSE stream so N browser tabs share
+  # a single TCP connection instead of opening separate HTTP/1.1 streams.
+  # Access the app at https://localhost (Caddy auto-generates a local TLS cert).
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3 QUIC
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      - web
+    profiles:
+      - caddy # opt-in: docker compose --profile caddy up
+
 volumes:
   postgres_data:
+  redis_data:
+  caddy_data:
+  caddy_config:

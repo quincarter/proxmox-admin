@@ -6,8 +6,16 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": ".dockerignore",
+        "hash": "17855917078999716495"
+      },
+      {
+        "file": ".env.example",
+        "hash": "1473312026418265893"
+      },
+      {
         "file": ".github/copilot-instructions.md",
-        "hash": "10121060976451050760"
+        "hash": "11863005534757435345"
       },
       {
         "file": ".github/llmstxt/effect-llms-full.txt",
@@ -27,11 +35,11 @@
       },
       {
         "file": ".gitignore",
-        "hash": "6682309163541032260"
+        "hash": "8170591308275622090"
       },
       {
         "file": ".yarn/install-state.gz",
-        "hash": "3781639642205840324"
+        "hash": "7755778923265544697"
       },
       {
         "file": ".yarn/releases/yarn-4.13.0.cjs",
@@ -42,24 +50,56 @@
         "hash": "16659945365133963064"
       },
       {
+        "file": "Caddyfile",
+        "hash": "5443765619116299141"
+      },
+      {
+        "file": "README.md",
+        "hash": "6448675944311358829"
+      },
+      {
         "file": "docker-compose.yml",
-        "hash": "1261555469397305177"
+        "hash": "2954897766592310849"
       },
       {
         "file": "docs/implementation-plan.md",
         "hash": "8734193663073066647"
       },
       {
+        "file": "logs.txt",
+        "hash": "2825298378664789374"
+      },
+      {
         "file": "nx.json",
-        "hash": "14255357934154027929"
+        "hash": "6432825806420229102"
       },
       {
         "file": "package.json",
-        "hash": "16999209048982761429"
+        "hash": "478626000149752001"
       },
       {
         "file": "public/vite.svg",
         "hash": "16046085400642193116"
+      },
+      {
+        "file": "screenshots/datacenter.png",
+        "hash": "18556057874592332"
+      },
+      {
+        "file": "screenshots/vm-hardware.png",
+        "hash": "8410646877964203477"
+      },
+      {
+        "file": "screenshots/vm-options.png",
+        "hash": "16865724503331491495"
+      },
+      {
+        "file": "screenshots/vm.png",
+        "hash": "6272478707031350239"
+      },
+      {
+        "file": "scripts/dev-up.sh",
+        "hash": "8607745609918118626"
       },
       {
         "file": "tsconfig.json",
@@ -67,18 +107,445 @@
       },
       {
         "file": "yarn.lock",
-        "hash": "17565770720477275425"
+        "hash": "6780134178690441351"
       }
     ],
     "projectFileMap": {
+      "worker": [
+        {
+          "file": "apps/worker/Dockerfile",
+          "hash": "3694777133884387571"
+        },
+        {
+          "file": "apps/worker/jest.config.ts",
+          "hash": "10332319544678176956"
+        },
+        {
+          "file": "apps/worker/package.json",
+          "hash": "1129025343331216236",
+          "deps": [
+            "npm:@types/jest@29.5.14",
+            "npm:@types/node",
+            "npm:jest@29.7.0",
+            "npm:ts-jest",
+            "npm:ts-node",
+            "npm:typescript",
+            "npm:axios",
+            "npm:ioredis"
+          ]
+        },
+        {
+          "file": "apps/worker/project.json",
+          "hash": "12440333738517297311"
+        },
+        {
+          "file": "apps/worker/src/config.ts",
+          "hash": "18405651628830123185"
+        },
+        {
+          "file": "apps/worker/src/index.ts",
+          "hash": "2926648570870943224"
+        },
+        {
+          "file": "apps/worker/src/poller.spec.ts",
+          "hash": "7320128159175926316"
+        },
+        {
+          "file": "apps/worker/src/poller.ts",
+          "hash": "7623447816214846975"
+        },
+        {
+          "file": "apps/worker/src/proxmox-client.ts",
+          "hash": "8375389423986640569"
+        },
+        {
+          "file": "apps/worker/src/publisher.spec.ts",
+          "hash": "7960146361552121360"
+        },
+        {
+          "file": "apps/worker/src/publisher.ts",
+          "hash": "16599576527633858371"
+        },
+        {
+          "file": "apps/worker/tsconfig.json",
+          "hash": "14891447054398194914"
+        }
+      ],
+      "types": [
+        {
+          "file": "packages/types/package.json",
+          "hash": "4046078488311240453",
+          "deps": [
+            "npm:typescript"
+          ]
+        },
+        {
+          "file": "packages/types/project.json",
+          "hash": "8213718224748369256"
+        },
+        {
+          "file": "packages/types/src/bff/api.ts",
+          "hash": "16967711361434158283"
+        },
+        {
+          "file": "packages/types/src/events.ts",
+          "hash": "6086261984415959233"
+        },
+        {
+          "file": "packages/types/src/index.ts",
+          "hash": "5326736120407014710"
+        },
+        {
+          "file": "packages/types/src/proxmox/auth.ts",
+          "hash": "14874401033591521698"
+        },
+        {
+          "file": "packages/types/src/proxmox/cluster.ts",
+          "hash": "16802306110029316188"
+        },
+        {
+          "file": "packages/types/src/proxmox/guest.ts",
+          "hash": "10322868710576356444"
+        },
+        {
+          "file": "packages/types/src/proxmox/node.ts",
+          "hash": "14317826974817220313"
+        },
+        {
+          "file": "packages/types/src/proxmox/storage.ts",
+          "hash": "8372761735146576492"
+        },
+        {
+          "file": "packages/types/src/proxmox/task.ts",
+          "hash": "9706828868262535047"
+        },
+        {
+          "file": "packages/types/src/ssh.ts",
+          "hash": "915920518930216205"
+        },
+        {
+          "file": "packages/types/tsconfig.json",
+          "hash": "2534610471546445945"
+        },
+        {
+          "file": "packages/types/tsconfig.tsbuildinfo",
+          "hash": "8011992135792910995"
+        }
+      ],
+      "api": [
+        {
+          "file": "apps/api/.env.example",
+          "hash": "18084727377875505996"
+        },
+        {
+          "file": "apps/api/Dockerfile",
+          "hash": "10853637345030573762"
+        },
+        {
+          "file": "apps/api/jest.config.ts",
+          "hash": "15158905220361158755"
+        },
+        {
+          "file": "apps/api/jest.e2e.config.ts",
+          "hash": "6282352689108434602"
+        },
+        {
+          "file": "apps/api/nest-cli.json",
+          "hash": "5970614017727616101"
+        },
+        {
+          "file": "apps/api/package.json",
+          "hash": "7084697999022877285",
+          "deps": [
+            "npm:@nestjs/cli",
+            "npm:@nestjs/testing",
+            "npm:@types/cookie-parser",
+            "npm:@types/express",
+            "npm:@types/jest",
+            "npm:@types/node",
+            "npm:@types/pg",
+            "npm:@types/ssh2",
+            "npm:@types/supertest",
+            "npm:@types/uuid",
+            "npm:@types/ws",
+            "npm:jest",
+            "npm:prisma",
+            "npm:supertest",
+            "npm:ts-jest",
+            "npm:ts-node",
+            "npm:typescript",
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/core",
+            "npm:@nestjs/platform-express",
+            "npm:@nestjs/platform-ws",
+            "npm:@nestjs/websockets",
+            "npm:@prisma/adapter-pg",
+            "npm:@prisma/client",
+            "types",
+            "npm:axios",
+            "npm:class-transformer",
+            "npm:class-validator",
+            "npm:cookie-parser",
+            "npm:https-proxy-agent",
+            "npm:ioredis",
+            "npm:pg",
+            "npm:reflect-metadata",
+            "npm:rxjs",
+            "npm:ssh2",
+            "npm:uuid",
+            "npm:ws"
+          ]
+        },
+        {
+          "file": "apps/api/prisma.config.ts",
+          "hash": "11045399649920701895"
+        },
+        {
+          "file": "apps/api/prisma/migrations/20260307234417_init/migration.sql",
+          "hash": "492170230687104016"
+        },
+        {
+          "file": "apps/api/prisma/migrations/migration_lock.toml",
+          "hash": "872437952673290735"
+        },
+        {
+          "file": "apps/api/prisma/schema.prisma",
+          "hash": "982662460372422329"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "15977424204700474844"
+        },
+        {
+          "file": "apps/api/src/app.module.ts",
+          "hash": "11857375357702490611"
+        },
+        {
+          "file": "apps/api/src/guards/session.guard.spec.ts",
+          "hash": "14771830557312177760"
+        },
+        {
+          "file": "apps/api/src/guards/session.guard.ts",
+          "hash": "15952787917152855688"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "4703893681873942113"
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.controller.ts",
+          "hash": "15720050694245009005"
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.module.ts",
+          "hash": "3249491320704590692"
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.service.spec.ts",
+          "hash": "10737778497360589016"
+        },
+        {
+          "file": "apps/api/src/modules/auth/auth.service.ts",
+          "hash": "15843511424094294837"
+        },
+        {
+          "file": "apps/api/src/modules/auth/dto/login.dto.ts",
+          "hash": "14391912167170823483"
+        },
+        {
+          "file": "apps/api/src/modules/discovery/discovery.controller.ts",
+          "hash": "8909146770125534676"
+        },
+        {
+          "file": "apps/api/src/modules/discovery/discovery.module.ts",
+          "hash": "12227527079558543953"
+        },
+        {
+          "file": "apps/api/src/modules/discovery/discovery.service.spec.ts",
+          "hash": "9871724182655604853"
+        },
+        {
+          "file": "apps/api/src/modules/discovery/discovery.service.ts",
+          "hash": "4061837411464128805"
+        },
+        {
+          "file": "apps/api/src/modules/events/events.controller.spec.ts",
+          "hash": "6085661775688603906"
+        },
+        {
+          "file": "apps/api/src/modules/events/events.controller.ts",
+          "hash": "6788875645451706243"
+        },
+        {
+          "file": "apps/api/src/modules/events/events.module.ts",
+          "hash": "15402444816115913480"
+        },
+        {
+          "file": "apps/api/src/modules/events/events.service.spec.ts",
+          "hash": "10074092384755864599"
+        },
+        {
+          "file": "apps/api/src/modules/events/events.service.ts",
+          "hash": "2649133803073261985"
+        },
+        {
+          "file": "apps/api/src/modules/guests/guests.controller.spec.ts",
+          "hash": "14511310978234205788"
+        },
+        {
+          "file": "apps/api/src/modules/guests/guests.controller.ts",
+          "hash": "4173280544503736792"
+        },
+        {
+          "file": "apps/api/src/modules/guests/guests.module.ts",
+          "hash": "8790642488614692731"
+        },
+        {
+          "file": "apps/api/src/modules/guests/guests.service.spec.ts",
+          "hash": "13989007433574976648"
+        },
+        {
+          "file": "apps/api/src/modules/guests/guests.service.ts",
+          "hash": "12227758570936964010"
+        },
+        {
+          "file": "apps/api/src/modules/health/health.controller.spec.ts",
+          "hash": "7897797340836083779"
+        },
+        {
+          "file": "apps/api/src/modules/health/health.controller.ts",
+          "hash": "13351687940695191269"
+        },
+        {
+          "file": "apps/api/src/modules/health/health.module.ts",
+          "hash": "15353749761779535100"
+        },
+        {
+          "file": "apps/api/src/modules/nodes/nodes.controller.ts",
+          "hash": "16621340602527462638"
+        },
+        {
+          "file": "apps/api/src/modules/nodes/nodes.module.ts",
+          "hash": "6054655922687401238"
+        },
+        {
+          "file": "apps/api/src/modules/nodes/nodes.service.spec.ts",
+          "hash": "3788645504776485778"
+        },
+        {
+          "file": "apps/api/src/modules/nodes/nodes.service.ts",
+          "hash": "2418993102494841790"
+        },
+        {
+          "file": "apps/api/src/modules/proxmox/proxmox-http.service.spec.ts",
+          "hash": "12578731366790621960"
+        },
+        {
+          "file": "apps/api/src/modules/proxmox/proxmox-http.service.ts",
+          "hash": "581616983576255708"
+        },
+        {
+          "file": "apps/api/src/modules/proxmox/proxmox.module.ts",
+          "hash": "5773192546288700639"
+        },
+        {
+          "file": "apps/api/src/modules/proxmox/proxmox.service.spec.ts",
+          "hash": "7102788163518106709"
+        },
+        {
+          "file": "apps/api/src/modules/proxmox/proxmox.service.ts",
+          "hash": "12452064015426012718"
+        },
+        {
+          "file": "apps/api/src/modules/ssh/ssh.gateway.ts",
+          "hash": "6854436443183254457"
+        },
+        {
+          "file": "apps/api/src/modules/ssh/ssh.module.ts",
+          "hash": "3945716571860118841"
+        },
+        {
+          "file": "apps/api/src/modules/storage/storage.controller.ts",
+          "hash": "16770166731886391448"
+        },
+        {
+          "file": "apps/api/src/modules/storage/storage.module.ts",
+          "hash": "8936389992648017056"
+        },
+        {
+          "file": "apps/api/src/modules/storage/storage.service.spec.ts",
+          "hash": "16730077220589428701"
+        },
+        {
+          "file": "apps/api/src/modules/storage/storage.service.ts",
+          "hash": "15047266051969512518"
+        },
+        {
+          "file": "apps/api/src/prisma/prisma.module.ts",
+          "hash": "5238423344839526472"
+        },
+        {
+          "file": "apps/api/src/prisma/prisma.service.ts",
+          "hash": "14460550287576014509"
+        },
+        {
+          "file": "apps/api/test/e2e/auth.e2e-spec.ts",
+          "hash": "11462323839080362163"
+        },
+        {
+          "file": "apps/api/test/e2e/discovery.e2e-spec.ts",
+          "hash": "17813463300759930558"
+        },
+        {
+          "file": "apps/api/test/e2e/events.e2e-spec.ts",
+          "hash": "1807491126872702502"
+        },
+        {
+          "file": "apps/api/test/e2e/guests.e2e-spec.ts",
+          "hash": "494677903272603078"
+        },
+        {
+          "file": "apps/api/test/e2e/health.e2e-spec.ts",
+          "hash": "2624624551161392291"
+        },
+        {
+          "file": "apps/api/test/e2e/nodes.e2e-spec.ts",
+          "hash": "13622503617601219937"
+        },
+        {
+          "file": "apps/api/test/e2e/storage.e2e-spec.ts",
+          "hash": "12218532739487002770"
+        },
+        {
+          "file": "apps/api/test/helpers/test-app.ts",
+          "hash": "5870138923225935726"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "16309952060291241899"
+        },
+        {
+          "file": "apps/api/tsconfig.test.json",
+          "hash": "13309327544479141838"
+        }
+      ],
       "web": [
+        {
+          "file": "apps/web/Dockerfile",
+          "hash": "4392220683342730515"
+        },
         {
           "file": "apps/web/index.html",
           "hash": "486156860852295324"
         },
         {
+          "file": "apps/web/nginx.conf",
+          "hash": "2515346815510286964"
+        },
+        {
           "file": "apps/web/package.json",
-          "hash": "7137355555905015637",
+          "hash": "13935937211376616672",
           "deps": [
             "npm:@esm-bundle/chai",
             "npm:@open-wc/testing",
@@ -97,17 +564,28 @@
             "npm:@lit/context",
             "npm:@lit/task",
             "types",
+            "npm:@xterm/addon-fit",
+            "npm:@xterm/xterm",
             "npm:chart.js",
-            "npm:lit"
+            "npm:lit",
+            "npm:sshclient-wasm"
           ]
         },
         {
           "file": "apps/web/project.json",
-          "hash": "7835559581926068934"
+          "hash": "1292190731090548691"
         },
         {
           "file": "apps/web/src/app/api.ts",
-          "hash": "10083629592280850467"
+          "hash": "11641676923333333945"
+        },
+        {
+          "file": "apps/web/src/app/event-stream.test.ts",
+          "hash": "355591545144706766"
+        },
+        {
+          "file": "apps/web/src/app/event-stream.ts",
+          "hash": "2856985015355267092"
         },
         {
           "file": "apps/web/src/assets/lit.svg",
@@ -123,11 +601,11 @@
         },
         {
           "file": "apps/web/src/components/app-shell/app-shell.styles.ts",
-          "hash": "7537899509482636934"
+          "hash": "3529736769354467537"
         },
         {
           "file": "apps/web/src/components/app-shell/app-shell.ts",
-          "hash": "14062092980854135189"
+          "hash": "2596540242676997036"
         },
         {
           "file": "apps/web/src/components/nav-rail/nav-rail.styles.ts",
@@ -136,6 +614,14 @@
         {
           "file": "apps/web/src/components/nav-rail/nav-rail.ts",
           "hash": "14657563581083258299"
+        },
+        {
+          "file": "apps/web/src/components/ssh-terminal/ssh-terminal.styles.ts",
+          "hash": "10911463673586426358"
+        },
+        {
+          "file": "apps/web/src/components/ssh-terminal/ssh-terminal.ts",
+          "hash": "7022640912574683290"
         },
         {
           "file": "apps/web/src/components/status-badge/status-badge.styles.ts",
@@ -191,11 +677,15 @@
         },
         {
           "file": "apps/web/src/features/lxc-detail/lxc-detail-view.styles.ts",
-          "hash": "3781426178824141769"
+          "hash": "15876611766273332393"
+        },
+        {
+          "file": "apps/web/src/features/lxc-detail/lxc-detail-view.test.ts",
+          "hash": "4335524114841422888"
         },
         {
           "file": "apps/web/src/features/lxc-detail/lxc-detail-view.ts",
-          "hash": "9240605629910884660"
+          "hash": "15161393653001868215"
         },
         {
           "file": "apps/web/src/features/lxc/lxc-view.styles.ts",
@@ -210,8 +700,12 @@
           "hash": "11342670913797499681"
         },
         {
+          "file": "apps/web/src/features/node-detail/node-detail-view.test.ts",
+          "hash": "8018199217311400125"
+        },
+        {
           "file": "apps/web/src/features/node-detail/node-detail-view.ts",
-          "hash": "5661033935110908277"
+          "hash": "3131351094986809511"
         },
         {
           "file": "apps/web/src/features/nodes/nodes-view.styles.ts",
@@ -220,6 +714,10 @@
         {
           "file": "apps/web/src/features/nodes/nodes-view.ts",
           "hash": "7320078442788263542"
+        },
+        {
+          "file": "apps/web/src/features/ssh-popup/ssh-popup.ts",
+          "hash": "3844091184992759372"
         },
         {
           "file": "apps/web/src/features/storage-detail/storage-detail-view.styles.ts",
@@ -239,11 +737,31 @@
         },
         {
           "file": "apps/web/src/features/vm-detail/vm-detail-view.styles.ts",
-          "hash": "9021948049569208071"
+          "hash": "8785261709116725156"
+        },
+        {
+          "file": "apps/web/src/features/vm-detail/vm-detail-view.test.ts",
+          "hash": "7231306006101394498"
         },
         {
           "file": "apps/web/src/features/vm-detail/vm-detail-view.ts",
-          "hash": "5056039134486341488"
+          "hash": "14023373656406036820"
+        },
+        {
+          "file": "apps/web/src/features/vm-detail/vm-hardware-panel.styles.ts",
+          "hash": "14107156555717107237"
+        },
+        {
+          "file": "apps/web/src/features/vm-detail/vm-hardware-panel.ts",
+          "hash": "5412451584109475440"
+        },
+        {
+          "file": "apps/web/src/features/vm-detail/vm-options-panel.styles.ts",
+          "hash": "925833662988872220"
+        },
+        {
+          "file": "apps/web/src/features/vm-detail/vm-options-panel.ts",
+          "hash": "5905581262638631330"
         },
         {
           "file": "apps/web/src/features/vm/vm-view.styles.ts",
@@ -263,7 +781,7 @@
         },
         {
           "file": "apps/web/src/state/app.state.ts",
-          "hash": "8287084566827028738"
+          "hash": "16261574400126829091"
         },
         {
           "file": "apps/web/src/styles/global.css",
@@ -274,287 +792,31 @@
           "hash": "11047005095724457975"
         },
         {
+          "file": "apps/web/src/workers/events-sse.worker.ts",
+          "hash": "1863381907654034240"
+        },
+        {
+          "file": "apps/web/src/workers/ssh-shared.worker.ts",
+          "hash": "1625729697191186236"
+        },
+        {
           "file": "apps/web/tsconfig.build.json",
-          "hash": "6874126875813045049"
+          "hash": "11751892737481306908"
         },
         {
           "file": "apps/web/tsconfig.json",
-          "hash": "17951569880951624022"
+          "hash": "3109918634002164355"
         },
         {
           "file": "apps/web/vite.config.ts",
-          "hash": "335735941127778011"
+          "hash": "14396368578546591157"
         },
         {
           "file": "apps/web/vitest.config.ts",
-          "hash": "15770946689753348812"
-        }
-      ],
-      "api": [
-        {
-          "file": "apps/api/.env.example",
-          "hash": "18084727377875505996"
-        },
-        {
-          "file": "apps/api/jest.e2e.config.ts",
-          "hash": "6282352689108434602"
-        },
-        {
-          "file": "apps/api/nest-cli.json",
-          "hash": "5970614017727616101"
-        },
-        {
-          "file": "apps/api/package.json",
-          "hash": "12059310942305344041",
-          "deps": [
-            "npm:@nestjs/cli",
-            "npm:@nestjs/testing",
-            "npm:@types/cookie-parser",
-            "npm:@types/express",
-            "npm:@types/jest",
-            "npm:@types/node",
-            "npm:@types/pg",
-            "npm:@types/supertest",
-            "npm:@types/uuid",
-            "npm:jest",
-            "npm:prisma",
-            "npm:supertest",
-            "npm:ts-jest",
-            "npm:ts-node",
-            "npm:typescript",
-            "npm:@nestjs/common",
-            "npm:@nestjs/config",
-            "npm:@nestjs/core",
-            "npm:@nestjs/platform-express",
-            "npm:@prisma/adapter-pg",
-            "npm:@prisma/client",
-            "types",
-            "npm:axios",
-            "npm:class-transformer",
-            "npm:class-validator",
-            "npm:cookie-parser",
-            "npm:https-proxy-agent",
-            "npm:pg",
-            "npm:reflect-metadata",
-            "npm:rxjs",
-            "npm:uuid"
-          ]
-        },
-        {
-          "file": "apps/api/prisma.config.ts",
-          "hash": "11045399649920701895"
-        },
-        {
-          "file": "apps/api/prisma/migrations/20260307234417_init/migration.sql",
-          "hash": "492170230687104016"
-        },
-        {
-          "file": "apps/api/prisma/migrations/migration_lock.toml",
-          "hash": "872437952673290735"
-        },
-        {
-          "file": "apps/api/prisma/schema.prisma",
-          "hash": "982662460372422329"
-        },
-        {
-          "file": "apps/api/project.json",
-          "hash": "9315422898176405593"
-        },
-        {
-          "file": "apps/api/src/app.module.ts",
-          "hash": "375843424457012293"
-        },
-        {
-          "file": "apps/api/src/guards/session.guard.ts",
-          "hash": "15952787917152855688"
-        },
-        {
-          "file": "apps/api/src/main.ts",
-          "hash": "10091449339448259765"
-        },
-        {
-          "file": "apps/api/src/modules/auth/auth.controller.ts",
-          "hash": "15720050694245009005"
-        },
-        {
-          "file": "apps/api/src/modules/auth/auth.module.ts",
-          "hash": "3249491320704590692"
-        },
-        {
-          "file": "apps/api/src/modules/auth/auth.service.ts",
-          "hash": "15843511424094294837"
-        },
-        {
-          "file": "apps/api/src/modules/auth/dto/login.dto.ts",
-          "hash": "14391912167170823483"
-        },
-        {
-          "file": "apps/api/src/modules/discovery/discovery.controller.ts",
-          "hash": "8909146770125534676"
-        },
-        {
-          "file": "apps/api/src/modules/discovery/discovery.module.ts",
-          "hash": "12227527079558543953"
-        },
-        {
-          "file": "apps/api/src/modules/discovery/discovery.service.ts",
-          "hash": "4061837411464128805"
-        },
-        {
-          "file": "apps/api/src/modules/guests/guests.controller.ts",
-          "hash": "10126512692725275530"
-        },
-        {
-          "file": "apps/api/src/modules/guests/guests.module.ts",
-          "hash": "8790642488614692731"
-        },
-        {
-          "file": "apps/api/src/modules/guests/guests.service.ts",
-          "hash": "3548477992338616030"
-        },
-        {
-          "file": "apps/api/src/modules/health/health.controller.ts",
-          "hash": "13351687940695191269"
-        },
-        {
-          "file": "apps/api/src/modules/health/health.module.ts",
-          "hash": "15353749761779535100"
-        },
-        {
-          "file": "apps/api/src/modules/nodes/nodes.controller.ts",
-          "hash": "16621340602527462638"
-        },
-        {
-          "file": "apps/api/src/modules/nodes/nodes.module.ts",
-          "hash": "6054655922687401238"
-        },
-        {
-          "file": "apps/api/src/modules/nodes/nodes.service.ts",
-          "hash": "2418993102494841790"
-        },
-        {
-          "file": "apps/api/src/modules/proxmox/proxmox-http.service.ts",
-          "hash": "581616983576255708"
-        },
-        {
-          "file": "apps/api/src/modules/proxmox/proxmox.module.ts",
-          "hash": "5773192546288700639"
-        },
-        {
-          "file": "apps/api/src/modules/proxmox/proxmox.service.ts",
-          "hash": "12452064015426012718"
-        },
-        {
-          "file": "apps/api/src/modules/storage/storage.controller.ts",
-          "hash": "16770166731886391448"
-        },
-        {
-          "file": "apps/api/src/modules/storage/storage.module.ts",
-          "hash": "8936389992648017056"
-        },
-        {
-          "file": "apps/api/src/modules/storage/storage.service.ts",
-          "hash": "15047266051969512518"
-        },
-        {
-          "file": "apps/api/src/prisma/prisma.module.ts",
-          "hash": "5238423344839526472"
-        },
-        {
-          "file": "apps/api/src/prisma/prisma.service.ts",
-          "hash": "14460550287576014509"
-        },
-        {
-          "file": "apps/api/test/e2e/auth.e2e-spec.ts",
-          "hash": "11462323839080362163"
-        },
-        {
-          "file": "apps/api/test/e2e/discovery.e2e-spec.ts",
-          "hash": "17813463300759930558"
-        },
-        {
-          "file": "apps/api/test/e2e/guests.e2e-spec.ts",
-          "hash": "494677903272603078"
-        },
-        {
-          "file": "apps/api/test/e2e/health.e2e-spec.ts",
-          "hash": "2624624551161392291"
-        },
-        {
-          "file": "apps/api/test/e2e/nodes.e2e-spec.ts",
-          "hash": "13622503617601219937"
-        },
-        {
-          "file": "apps/api/test/e2e/storage.e2e-spec.ts",
-          "hash": "12218532739487002770"
-        },
-        {
-          "file": "apps/api/test/helpers/test-app.ts",
-          "hash": "8538568051785239434"
-        },
-        {
-          "file": "apps/api/tsconfig.json",
-          "hash": "16309952060291241899"
-        },
-        {
-          "file": "apps/api/tsconfig.test.json",
-          "hash": "13309327544479141838"
-        }
-      ],
-      "types": [
-        {
-          "file": "packages/types/package.json",
-          "hash": "4046078488311240453",
-          "deps": [
-            "npm:typescript"
-          ]
-        },
-        {
-          "file": "packages/types/project.json",
-          "hash": "8213718224748369256"
-        },
-        {
-          "file": "packages/types/src/bff/api.ts",
-          "hash": "16967711361434158283"
-        },
-        {
-          "file": "packages/types/src/index.ts",
-          "hash": "9278787169316689477"
-        },
-        {
-          "file": "packages/types/src/proxmox/auth.ts",
-          "hash": "14874401033591521698"
-        },
-        {
-          "file": "packages/types/src/proxmox/cluster.ts",
-          "hash": "16802306110029316188"
-        },
-        {
-          "file": "packages/types/src/proxmox/guest.ts",
-          "hash": "11430697097270228058"
-        },
-        {
-          "file": "packages/types/src/proxmox/node.ts",
-          "hash": "14317826974817220313"
-        },
-        {
-          "file": "packages/types/src/proxmox/storage.ts",
-          "hash": "8372761735146576492"
-        },
-        {
-          "file": "packages/types/src/proxmox/task.ts",
-          "hash": "9706828868262535047"
-        },
-        {
-          "file": "packages/types/tsconfig.json",
-          "hash": "2534610471546445945"
-        },
-        {
-          "file": "packages/types/tsconfig.tsbuildinfo",
-          "hash": "11728513249845371556"
+          "hash": "13249471216487428407"
         }
       ]
     }
   },
-  "externalNodesHash": "10658077568536618913"
+  "externalNodesHash": "12827524576545381769"
 }

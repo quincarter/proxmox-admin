@@ -18,6 +18,7 @@ export default defineConfig({
   },
   test: {
     environment: "happy-dom",
+    globals: true,
     include: ["src/**/*.test.ts"],
     // Lit components register via customElements.define; each test file gets
     // its own happy-dom window so there are no double-registration errors.

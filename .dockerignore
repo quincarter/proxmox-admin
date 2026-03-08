@@ -1,0 +1,36 @@
+# Dependencies
+**/node_modules
+
+# Build outputs
+**/dist
+**/*.tsbuildinfo
+**/.tsbuildinfo
+
+# Yarn cache and state (only .yarn/releases is needed by the Dockerfiles)
+.yarn/cache
+.yarn/install-state.gz
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment files (never bake credentials into images)
+.env
+.env.*
+!.env.example
+
+# Editor and OS
+.vscode
+.idea
+*.DS_Store
+*.swp
+*.swo
+
+# Test artifacts
+coverage
+**/coverage
+
+# Docs
+docs
+README.md
