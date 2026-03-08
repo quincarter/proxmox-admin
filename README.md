@@ -20,6 +20,13 @@ An operator-focused administration console for Proxmox VE. Built with Lit + Type
 
 ---
 
+## Screenshots
+<img width="1840" height="1196" alt="Screenshot 2026-03-08 at 11 34 22 AM" src="https://github.com/user-attachments/assets/5e8654a4-44f8-4709-a6ed-b5273a9a40a5" />
+<img width="1840" height="1196" alt="Screenshot 2026-03-08 at 11 34 30 AM" src="https://github.com/user-attachments/assets/8ed9232d-b887-4446-a81a-690825009d93" />
+<img width="1723" height="968" alt="Screenshot 2026-03-08 at 3 46 41 PM" src="https://github.com/user-attachments/assets/18498ddb-abea-49c0-a9ec-d05aa368bc0b" />
+
+
+
 ## Project structure
 
 ```
